@@ -7,6 +7,10 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.utils.viewport.StretchViewport
 import com.github.otakusenpai.demomap.map.World
+import com.github.otakusenpai.demomap.map.overworld.OverworldChunk
+import com.github.otakusenpai.demomap.map.worldItems.Leader
+import squidpony.squidgrid.gui.gdx.SquidInput
+import kotlin.time.ExperimentalTime
 
 class GameMain : Game() {
     var width = 0
@@ -16,12 +20,15 @@ class GameMain : Game() {
     var seed = 8L
     var loop = 0
 
-    lateinit var world: World
+    lateinit var player: Leader
 
+    lateinit var world: World
+    lateinit var input: SquidInput
     lateinit var batch: SpriteBatch
     lateinit var view: StretchViewport
     lateinit var camera: OrthographicCamera
 
+    @ExperimentalTime
     override fun create() {
         width = Gdx.graphics.width
         height = Gdx.graphics.height
@@ -31,7 +38,11 @@ class GameMain : Game() {
         camera.update()
         batch = SpriteBatch()
         view = StretchViewport(width.toFloat(), height.toFloat(),camera)
-        world = World(width,height,seed)
+        player = Leader().build(
+                width * OverworldChunk.chunkSize / 2,
+                height * OverworldChunk.chunkSize / 2)
+        input = InputManager(player)
+        world = World(400,400,seed)
         world.generateWorld()
     }
 
@@ -43,7 +54,7 @@ class GameMain : Game() {
         
         ++loop
         println(loop)
-        world.render(batch)
+        world.render(player,batch)
         
         batch.end()
     }

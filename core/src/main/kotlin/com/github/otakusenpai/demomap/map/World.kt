@@ -1,17 +1,22 @@
 package com.github.otakusenpai.demomap.map
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.github.otakusenpai.demomap.map.overworld.BiomeType
 import com.github.otakusenpai.demomap.map.overworld.Overworld
 import com.github.otakusenpai.demomap.map.overworld.OverworldChunk
 import com.github.otakusenpai.demomap.map.procgen.WorldGen
 import com.github.otakusenpai.demomap.map.worldItems.Leader
+import java.time.LocalDateTime
+import java.time.temporal.ChronoUnit
+import kotlin.time.ExperimentalTime
+import kotlin.time.seconds
 
 class World() {
     lateinit var worldGen: WorldGen
     lateinit var overWorld: Overworld
-    lateinit var player: Leader
 
     val xSize = 16
     val ySize = 16
@@ -45,33 +50,14 @@ class World() {
     constructor(screenX: Int, screenY: Int, seed: Long): this() {
         worldGen = WorldGen(seed)
         overWorld = Overworld(xSize, ySize)
-        player = Leader().build(
-                overWorld.xSize * OverworldChunk.chunkSize / 2,
-                overWorld.ySize * OverworldChunk.chunkSize / 2
-        )
         screenWidth = screenX / 4
         screenHeight = screenY / 4
-
     }
 
-    fun toWorldX(screenX: Int): Int {
-        return player.pos.x - screenWidth / 2 + screenX
-    }
-
-    fun toWorldY(screenY: Int): Int {
-        return player.pos.y + screenHeight / 2 - screenY
-    }
-
-    fun toScreenX(worldX: Int): Int {
-        return worldX - (player.pos.x - screenWidth / 2)
-    }
-
-    fun toScreenY(worldY: Int): Int {
-        return -worldY + player.pos.y + screenHeight / 2
-    }
-
+    @ExperimentalTime
     fun generateWorld() {
         println("Starting generation.")
+        val start = LocalDateTime.now()
 
         worldGen.generateElevation(overWorld)
         println("Generated elevation.")
@@ -108,9 +94,34 @@ class World() {
 
         worldGen.populateSettlements(overWorld)
         println("Generated settlements.")
-        println("Done.")
+        val end = LocalDateTime.now()
+        val s = ChronoUnit.SECONDS.between(start,end)
+        println("Done. Took ${s.seconds} seconds")
     }
 
+    fun render(player: Leader, batch: SpriteBatch) {
+        val left = player.pos.x - screenWidth / 2
+        val top = player.pos.y + screenHeight / 2
+        var wx = 0
+        var wy = 0
+        for (x in 0 until screenWidth) {
+            for (y in 0 until screenHeight) {
+                //Get world coords for screen
+                wx = x + left
+                wy = -y + top
+                if (overWorld.getSettlement(wx, wy) != null) {
+                    batch.draw(Textures.settlement,(x * 32).toFloat(), (y * 32).toFloat())
+                } else {
+                    batch.draw(getBiomeTexture(overWorld.getTileType(wx,wy)),(x * 32).toFloat(), (y * 32).toFloat())
+                }
+            }
+        }
+        batch.draw(Textures.settlement,((player.pos.x - left) * 32).toFloat(),
+                ((-player.pos.y + top) * 32).toFloat())
+        //Gdx.graphics.setTitle("X: ${player.pos.x} Y: ${player.pos.y}")
+    }
+
+    /*
     fun render(batch: SpriteBatch) {
         val left = player.pos.x - screenWidth / 2
         val top = player.pos.y + screenHeight / 2
@@ -142,4 +153,5 @@ class World() {
             }
         }
     }
+    */
 }

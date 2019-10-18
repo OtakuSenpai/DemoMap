@@ -41,6 +41,5 @@ object Textures {
     val tropicalSeasonalForest = atlas.findRegion( "snake-c",1).texture
     val tempDesert = atlas.findRegion("limestone",1).texture
     val subtropicalDesert = atlas.findRegion("mangrove",3).texture
-    val settlement = assets.assetManager.get("TheArshenOrbs-Dungeon.atlas",
-            TextureAtlas::class.java).findRegion("abandoned_shop").texture
+    val settlement = atlas.findRegion("abandoned_shop").texture
 }

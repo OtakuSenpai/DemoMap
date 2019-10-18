@@ -1,5 +1,6 @@
 package com.github.otakusenpai.demomap.map.worldItems
 
+import com.github.otakusenpai.gameutilskt.math.Direction2d
 import com.github.otakusenpai.gameutilskt.math.Point2d
 
 class Leader() : WorldItem() {
@@ -16,5 +17,10 @@ class Leader() : WorldItem() {
 
     override fun get(id: Int): Leader {
         return items[id] as Leader
+    }
+
+    fun setPosition(direction2d: Direction2d) {
+        this.pos.x += direction2d.x
+        this.pos.y += direction2d.y
     }
 }
