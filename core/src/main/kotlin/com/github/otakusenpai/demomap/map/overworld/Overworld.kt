@@ -16,16 +16,16 @@ class Overworld() : TileBasedMap2d {
     }
 
     private fun getPrecise(globalCoord: Int): Int = if (globalCoord >= 0) {
-        globalCoord % OverworldChunk.chunkSize
-    } else {
-        (globalCoord % OverworldChunk.chunkSize) + OverworldChunk.chunkSize - 1
-    }
+            globalCoord % OverworldChunk.chunkSize
+        } else {
+            (globalCoord % OverworldChunk.chunkSize) + OverworldChunk.chunkSize - 1
+        }
 
     private fun getChunkCoord(globalCoord: Int): Int = if (globalCoord >= 0) {
-        globalCoord / OverworldChunk.chunkSize
-    } else {
-        (globalCoord / OverworldChunk.chunkSize) - 1
-    }
+            globalCoord / OverworldChunk.chunkSize
+        } else {
+            (globalCoord / OverworldChunk.chunkSize) - 1
+        }
 
     fun getPreciseXSize() = xSize * OverworldChunk.chunkSize
     fun getPreciseYSize() = ySize * OverworldChunk.chunkSize
@@ -79,7 +79,7 @@ class Overworld() : TileBasedMap2d {
     fun loadChunk(chunkX: Int, chunkY: Int): OverworldChunk? {
         if (chunkX < 0 || chunkX >= xSize || chunkY < 0 || chunkY >= ySize) {
             return null
-        }
+        } 
 //        else if (chunks[chunkX][chunkY] == null) {
 //            // TODO: load from disk
 //            throw RuntimeException("Nope, loading not implemented yet")

@@ -20,7 +20,7 @@ class Leader() : WorldItem() {
     }
 
     fun setPosition(direction2d: Direction2d) {
-        this.pos.x += direction2d.x
-        this.pos.y += direction2d.y
+        this.pos.x -= direction2d.x
+        this.pos.y -= direction2d.y
     }
 }

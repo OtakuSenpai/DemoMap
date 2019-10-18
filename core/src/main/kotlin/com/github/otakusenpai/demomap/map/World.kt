@@ -4,14 +4,12 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.github.otakusenpai.demomap.map.overworld.BiomeType
 import com.github.otakusenpai.demomap.map.overworld.Overworld
-import com.github.otakusenpai.demomap.map.overworld.OverworldChunk
 import com.github.otakusenpai.demomap.map.procgen.WorldGen
 import com.github.otakusenpai.demomap.map.worldItems.Leader
 
 class World() {
     lateinit var worldGen: WorldGen
     lateinit var overWorld: Overworld
-    lateinit var player: Leader
 
     val xSize = 16
     val ySize = 16
@@ -45,29 +43,9 @@ class World() {
     constructor(screenX: Int, screenY: Int, seed: Long): this() {
         worldGen = WorldGen(seed)
         overWorld = Overworld(xSize, ySize)
-        player = Leader().build(
-                overWorld.xSize * OverworldChunk.chunkSize / 2,
-                overWorld.ySize * OverworldChunk.chunkSize / 2
-        )
         screenWidth = screenX / 4
         screenHeight = screenY / 4
 
-    }
-
-    fun toWorldX(screenX: Int): Int {
-        return player.pos.x - screenWidth / 2 + screenX
-    }
-
-    fun toWorldY(screenY: Int): Int {
-        return player.pos.y + screenHeight / 2 - screenY
-    }
-
-    fun toScreenX(worldX: Int): Int {
-        return worldX - (player.pos.x - screenWidth / 2)
-    }
-
-    fun toScreenY(worldY: Int): Int {
-        return -worldY + player.pos.y + screenHeight / 2
     }
 
     fun generateWorld() {

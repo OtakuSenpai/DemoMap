@@ -2,6 +2,7 @@ package com.github.otakusenpai.demomap
 
 import com.badlogic.gdx.Game
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.InputAdapter
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
@@ -9,26 +10,21 @@ import com.badlogic.gdx.utils.viewport.StretchViewport
 import com.github.otakusenpai.demomap.map.World
 import com.github.otakusenpai.demomap.map.overworld.OverworldChunk
 import com.github.otakusenpai.demomap.map.worldItems.Leader
-import squidpony.squidgrid.gui.gdx.SquidInput
-import kotlin.time.ExperimentalTime
 
 class GameMain : Game() {
     var width = 0
     var height = 0
-    var xSize = 16
-    var ySize = 16
     var seed = 8L
     var loop = 0
 
-    lateinit var player: Leader
-
     lateinit var world: World
-    lateinit var input: SquidInput
+    lateinit var input: InputAdapter
+    lateinit var leader: Leader
+
     lateinit var batch: SpriteBatch
     lateinit var view: StretchViewport
     lateinit var camera: OrthographicCamera
 
-    @ExperimentalTime
     override fun create() {
         width = Gdx.graphics.width / 4
         height = Gdx.graphics.height / 4
@@ -38,11 +34,11 @@ class GameMain : Game() {
         camera.update()
         batch = SpriteBatch()
         view = StretchViewport(width.toFloat(), height.toFloat(),camera)
-        player = Leader().build(
-                width * OverworldChunk.chunkSize / 2,
-                height * OverworldChunk.chunkSize / 2)
-        input = InputManager(player)
         world = World(width,height,seed)
+        leader = Leader().build(world.xSize * OverworldChunk.chunkSize / 2,
+                world.ySize * OverworldChunk.chunkSize / 2)
+        input = InputManager(leader)
+        Gdx.input.inputProcessor = input
         world.generateWorld()
     }
 
@@ -51,11 +47,11 @@ class GameMain : Game() {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
         Gdx.gl.glDisable(GL20.GL_BLEND)
         batch.begin()
-
+        
 //        ++loop
 //        println(loop)
-        world.render(player, batch)
-
+        world.render(leader,batch)
+        
         batch.end()
     }
 
@@ -71,4 +67,5 @@ class GameMain : Game() {
         camera.viewportHeight = 30f * height/width
         camera.update()
     }
+
 }

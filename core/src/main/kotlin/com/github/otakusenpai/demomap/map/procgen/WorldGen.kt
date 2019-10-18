@@ -285,7 +285,7 @@ class WorldGen {
                 }
                 for (s in settlement.items) {
                     s as Settlement
-                    val dist = if(p.getChebyshevDistance(s.pos) == 0) 1 else p.getChebyshevDistance(s.pos)
+                    val dist = if(p.getChebyshevDistance(s.pos) == 0) 1 else p.getChebyshevDistance(s.pos) 
                     score -= s.population * pop / (dist * dist)
                 }
                 val percip = overWorld.getPrecipitation(p.x, p.y)
