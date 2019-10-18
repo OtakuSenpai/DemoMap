@@ -39,8 +39,8 @@ class WorldGen {
         val line = Line2D.Float(Point2D.Float(0f, overWorld.getPreciseXSize().toFloat()),
                 Point2D.Float(overWorld.getPreciseYSize().toFloat(), 0f))
         val overWorldChunk = OverworldChunk()
-        for (x in 0 until OverworldChunk.chunkSize - 1) {
-            for (y in 0 until OverworldChunk.chunkSize - 1) {
+        for (x in 0 until OverworldChunk.chunkSize) {
+            for (y in 0 until OverworldChunk.chunkSize) {
                 //global coord
                 val nx = chunkX * OverworldChunk.chunkSize + x
                 val ny = chunkY * OverworldChunk.chunkSize + y
@@ -73,8 +73,8 @@ class WorldGen {
         val overWorldChunk = overWorld.loadChunk(chunkX, chunkY)
         val yCenter = overWorld.ySize * OverworldChunk.chunkSize / 2
 
-        for (x in 0 until OverworldChunk.chunkSize - 1) {
-            for (y in 0 until OverworldChunk.chunkSize - 1) {
+        for (x in 0 until OverworldChunk.chunkSize) {
+            for (y in 0 until OverworldChunk.chunkSize) {
 
                 val nx = chunkX * OverworldChunk.chunkSize + x
                 val ny = chunkY * OverworldChunk.chunkSize + y
@@ -203,7 +203,7 @@ class WorldGen {
                 for (y in 0 until ySize) {
                     var value = 0f
                     for (xD in -5..5) {
-                        value += riverFlux[MathUtils.limit(x + xD, 0, (xSize - 1).toInt())][y] /
+                        value += riverFlux[MathUtils.limit(x + xD, 0, (xSize - 1))][y] /
                                 (abs(xD) + 1)
                     }
                     riverFlux[x][y] = value / 3.9f
@@ -213,7 +213,7 @@ class WorldGen {
                 for (y in 0 until ySize) {
                     var value = 0f
                     for (yD in -5..5) {
-                        value += riverFlux[x][MathUtils.limit(y + yD, 0, (ySize - 1).toInt())] /
+                        value += riverFlux[x][MathUtils.limit(y + yD, 0, (ySize - 1))] /
                                 (abs(yD) + 1)
                     }
                     riverFlux[x][y] = value / 3.9f
@@ -257,19 +257,19 @@ class WorldGen {
      * @param overWorld
      */
     fun populateSettlements(overWorld: Overworld) {
-        val xSize = (overWorld.getPreciseXSize() - 1).toInt()
-        val ySize = (overWorld.getPreciseYSize() - 1).toInt()
+        val xSize = overWorld.getPreciseXSize()
+        val ySize = overWorld.getPreciseYSize()
         val totalSettlements = 20
         val propositions = 1000
 
         // Build Settlements
         for (i in 0 until totalSettlements) {
             val possibleLocations = mutableListOf<Point2d>()
-            val pop = d(1000)
+            val pop = d(1000) // dice roll
             // Propose new settlement locations
             for (j in 0 until propositions) {
-                val x = MathUtils.getIntInRange(0, xSize)
-                val y = MathUtils.getIntInRange(0, ySize)
+                val x = MathUtils.getIntInRange(0, xSize-1)
+                val y = MathUtils.getIntInRange(0, ySize-1)
                 possibleLocations.add(Point2d(x, y))
             }
 
@@ -303,16 +303,16 @@ class WorldGen {
 
 
     fun generateElevation(overWorld: Overworld) {
-        for(x in 0 until overWorld.xSize - 1) {
-            for(y in 0 until overWorld.ySize - 1) {
+        for(x in 0 until overWorld.xSize) {
+            for(y in 0 until overWorld.ySize) {
                 overWorld.chunks[x][y] = generateChunkedHeightMap(overWorld, mutableListOf(ImplShapeMod()), x, y)
             }
         }
     }
 
     fun evenElevation(overWorld: Overworld) {
-        val xSize = (overWorld.getPreciseXSize() -1)
-        val ySize = (overWorld.getPreciseYSize() - 1)
+        val xSize = (overWorld.getPreciseXSize())
+        val ySize = (overWorld.getPreciseYSize())
         var highest = -1f
         var lowest = 1f
 
@@ -340,8 +340,8 @@ class WorldGen {
     }
 
     fun dropEdges(overWorld: Overworld) {
-        val xSize = (overWorld.getPreciseXSize() - 1)
-        val ySize = (overWorld.getPreciseYSize() - 1)
+        val xSize = (overWorld.getPreciseXSize())
+        val ySize = (overWorld.getPreciseYSize())
         val xCenter = overWorld.xSize * OverworldChunk.chunkSize / 2
         val yCenter = overWorld.ySize * OverworldChunk.chunkSize / 2
         val maxDist = sqrt((xCenter * xCenter + yCenter * yCenter).toDouble())
@@ -359,8 +359,8 @@ class WorldGen {
     }
 
     fun generateWind(overWorld: Overworld) {
-        val xSize = (overWorld.getPreciseXSize() - 1)
-        val ySize = (overWorld.getPreciseYSize() - 1)
+        val xSize = (overWorld.getPreciseXSize())
+        val ySize = (overWorld.getPreciseYSize())
         val periods = 4f
 
         IntRange(0, overWorld.xSize - 1).forEach { xChunk ->

@@ -11,8 +11,8 @@ class World() {
     lateinit var worldGen: WorldGen
     lateinit var overWorld: Overworld
 
-    val xSize = 16
-    val ySize = 16
+    val xSize = 8
+    val ySize = 8
     var screenWidth = 0
     var screenHeight = 0
 
@@ -49,6 +49,8 @@ class World() {
     }
 
     fun generateWorld() {
+        val startTime : Long = System.currentTimeMillis()
+        
         println("Starting generation.")
 
         worldGen.generateElevation(overWorld)
@@ -86,7 +88,7 @@ class World() {
 
         worldGen.populateSettlements(overWorld)
         println("Generated settlements.")
-        println("Done.")
+        println("Done in " + (System.currentTimeMillis() - startTime) / 1000.0 + " seconds")
     }
 
     fun render(player: Leader, batch: SpriteBatch) {

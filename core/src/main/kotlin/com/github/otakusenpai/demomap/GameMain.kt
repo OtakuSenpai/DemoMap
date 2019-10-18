@@ -35,8 +35,11 @@ class GameMain : Game() {
         batch = SpriteBatch()
         view = StretchViewport(width.toFloat(), height.toFloat(),camera)
         world = World(width,height,seed)
-        leader = Leader().build(world.xSize * OverworldChunk.chunkSize / 2,
-                world.ySize * OverworldChunk.chunkSize / 2)
+        leader = Leader().build((world.xSize * OverworldChunk.chunkSize * 0.5).toInt(),
+                (world.ySize * OverworldChunk.chunkSize * 0.5).toInt())
+        // don't use the next comment in a release; it caused the all-ocean bug
+//        leader = Leader().build(width * OverworldChunk.chunkSize / 2,
+//                height * OverworldChunk.chunkSize / 2)
         input = InputManager(leader)
         Gdx.input.inputProcessor = input
         world.generateWorld()

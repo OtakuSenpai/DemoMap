@@ -36,7 +36,7 @@ class OverworldChunk {
         return if (river[pX][pY]) BiomeType.RIVER else BiomeType.biome(elevation[pX][pY], temperature[pX][pY], precipitation[pX][pY])
     }
     companion object {
-        const val chunkSize = 64
+        const val chunkSize = 16
     }
 
 }

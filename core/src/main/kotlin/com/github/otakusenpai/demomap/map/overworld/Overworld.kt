@@ -18,13 +18,13 @@ class Overworld() : TileBasedMap2d {
     private fun getPrecise(globalCoord: Int): Int = if (globalCoord >= 0) {
             globalCoord % OverworldChunk.chunkSize
         } else {
-            (globalCoord % OverworldChunk.chunkSize) + OverworldChunk.chunkSize - 1
+            (globalCoord % OverworldChunk.chunkSize) + OverworldChunk.chunkSize
         }
 
     private fun getChunkCoord(globalCoord: Int): Int = if (globalCoord >= 0) {
             globalCoord / OverworldChunk.chunkSize
         } else {
-            (globalCoord / OverworldChunk.chunkSize) - 1
+            (globalCoord + 1 - OverworldChunk.chunkSize) / OverworldChunk.chunkSize
         }
 
     fun getPreciseXSize() = xSize * OverworldChunk.chunkSize
