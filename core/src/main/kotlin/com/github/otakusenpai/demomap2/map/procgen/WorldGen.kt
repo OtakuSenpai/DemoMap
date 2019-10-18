@@ -1,8 +1,8 @@
-package com.github.otakusenpai.demomap.map.procgen
+package com.github.otakusenpai.demomap2.map.procgen
 
-import com.github.otakusenpai.demomap.map.overworld.Overworld
-import com.github.otakusenpai.demomap.map.overworld.OverworldChunk
-import com.github.otakusenpai.demomap.map.worldItems.Settlement
+import com.github.otakusenpai.demomap2.map.overworld.Overworld
+import com.github.otakusenpai.demomap2.map.overworld.OverworldChunk
+import com.github.otakusenpai.demomap2.map.worldItems.Settlement
 import com.github.otakusenpai.gameutilskt.math.Direction2d
 import com.github.otakusenpai.gameutilskt.math.MathUtils
 import com.github.otakusenpai.gameutilskt.math.MathUtils.Companion.d
@@ -285,7 +285,7 @@ class WorldGen {
                 }
                 for (s in settlement.items) {
                     s as Settlement
-                    val dist = if(p.getChebyshevDistance(s.pos) == 0) 1 else p.getChebyshevDistance(s.pos)
+                    val dist = if(p.getChebyshevDistance(s.pos) == 0) 1 else p.getChebyshevDistance(s.pos) 
                     score -= s.population * pop / (dist * dist)
                 }
                 val percip = overWorld.getPrecipitation(p.x, p.y)

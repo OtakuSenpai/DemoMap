@@ -1,4 +1,4 @@
-package com.github.otakusenpai.demomap.map
+package com.github.otakusenpai.demomap2.map
 
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.Texture

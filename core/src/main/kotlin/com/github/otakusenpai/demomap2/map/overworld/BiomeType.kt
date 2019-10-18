@@ -1,4 +1,4 @@
-package com.github.otakusenpai.demomap.map.overworld
+package com.github.otakusenpai.demomap2.map.overworld
 
 import com.badlogic.gdx.graphics.Color
 import squidpony.squidgrid.gui.gdx.SColor

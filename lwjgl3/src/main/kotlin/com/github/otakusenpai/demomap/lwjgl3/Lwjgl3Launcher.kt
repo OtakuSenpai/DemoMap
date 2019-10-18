@@ -2,7 +2,7 @@ package com.github.otakusenpai.demomap.lwjgl3
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration
-import com.github.otakusenpai.demomap.GameMain
+import com.github.otakusenpai.demomap2.GameMain
 
 object Lwjgl3Launcher {
     private val defaultConfiguration: Lwjgl3ApplicationConfiguration

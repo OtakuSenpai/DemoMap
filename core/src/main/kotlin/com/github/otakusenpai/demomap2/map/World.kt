@@ -1,12 +1,12 @@
-package com.github.otakusenpai.demomap.map
+package com.github.otakusenpai.demomap2.map
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
-import com.github.otakusenpai.demomap.map.overworld.BiomeType
-import com.github.otakusenpai.demomap.map.overworld.Overworld
-import com.github.otakusenpai.demomap.map.overworld.OverworldChunk
-import com.github.otakusenpai.demomap.map.procgen.WorldGen
-import com.github.otakusenpai.demomap.map.worldItems.Leader
+import com.github.otakusenpai.demomap2.map.overworld.BiomeType
+import com.github.otakusenpai.demomap2.map.overworld.Overworld
+import com.github.otakusenpai.demomap2.map.overworld.OverworldChunk
+import com.github.otakusenpai.demomap2.map.procgen.WorldGen
+import com.github.otakusenpai.demomap2.map.worldItems.Leader
 
 class World() {
     lateinit var worldGen: WorldGen
@@ -111,7 +111,7 @@ class World() {
         println("Done.")
     }
 
-    fun render(player: Leader, batch: SpriteBatch) {
+    fun render(batch: SpriteBatch) {
         val left = player.pos.x - screenWidth / 2
         val top = player.pos.y + screenHeight / 2
         for (x in 0 until screenWidth) {

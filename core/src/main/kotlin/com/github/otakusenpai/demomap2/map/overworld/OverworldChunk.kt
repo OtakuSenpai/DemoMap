@@ -1,6 +1,6 @@
-package com.github.otakusenpai.demomap.map.overworld
+package com.github.otakusenpai.demomap2.map.overworld
 
-import com.github.otakusenpai.demomap.map.worldItems.Settlement
+import com.github.otakusenpai.demomap2.map.worldItems.Settlement
 
 class OverworldChunk {
     var elevation: Array<FloatArray>
