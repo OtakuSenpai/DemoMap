@@ -10,11 +10,12 @@ import com.badlogic.gdx.utils.viewport.StretchViewport
 import com.github.otakusenpai.demomap.map.World
 import com.github.otakusenpai.demomap.map.overworld.OverworldChunk
 import com.github.otakusenpai.demomap.map.worldItems.Leader
+import squidpony.squidmath.StatefulRNG
 
 class GameMain : Game() {
     var width = 0
     var height = 0
-    var seed = 8L
+    var rng = StatefulRNG()
     var loop = 0
 
     lateinit var world: World
@@ -34,7 +35,7 @@ class GameMain : Game() {
         camera.update()
         batch = SpriteBatch()
         view = StretchViewport(width.toFloat(), height.toFloat(),camera)
-        world = World(width,height,seed)
+        world = World(width,height,rng)
         leader = Leader().build((world.xSize * OverworldChunk.chunkSize * 0.5).toInt(),
                 (world.ySize * OverworldChunk.chunkSize * 0.5).toInt())
         // don't use the next comment in a release; it caused the all-ocean bug
@@ -46,7 +47,7 @@ class GameMain : Game() {
     }
 
     override fun render() {
-        Gdx.gl.glClearColor(1f, 1f, 1f, 1f)
+        Gdx.gl.glClearColor(0.25f, 0.45f, 0.1f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
         Gdx.gl.glDisable(GL20.GL_BLEND)
         batch.begin()

@@ -28,7 +28,7 @@ enum class BiomeType constructor(val blocks: Boolean, val character: Char, val c
 
     SUBTROPICAL_DESERT(false, 'd', SColor.NAVAJO_WHITE),
     GRASSLAND(false, ':', SColor.YELLOW_GREEN),
-    TROPICAL_SEASONAL_FOREST(false, 'S', SColor.GREEN_BAMBOO),
+    TROPICAL_SEASONAL_FOREST(false, 'S', SColor.AURORA_KELLY_GREEN),
     TROPICAL_RAIN_FOREST(false, 'T', SColor.DARK_GREEN);
 
     val darkColor: Color

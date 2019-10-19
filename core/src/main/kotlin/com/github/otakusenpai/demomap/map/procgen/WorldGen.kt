@@ -7,8 +7,9 @@ import com.github.otakusenpai.gameutilskt.math.Direction2d
 import com.github.otakusenpai.gameutilskt.math.MathUtils
 import com.github.otakusenpai.gameutilskt.math.MathUtils.Companion.d
 import com.github.otakusenpai.gameutilskt.math.Point2d
-import com.github.otakusenpai.gameutilskt.noise.SimplexNoise
 import com.github.otakusenpai.gameutilskt.pathing.twoD.pathfinder.AStarPathFinder2d
+import squidpony.squidmath.FastNoise
+import squidpony.squidmath.StatefulRNG
 import java.awt.geom.Line2D
 import java.awt.geom.Point2D
 import java.util.*
@@ -18,20 +19,20 @@ import kotlin.math.*
 var settlement = Settlement()
 
 class WorldGen {
-    internal var el: SimplexNoise
-    internal var mo: SimplexNoise
-    internal var r: Random
+    internal var el: FastNoise
+    internal var mo: FastNoise
+    internal var r: StatefulRNG
 
-    constructor(seed: Long) {
-        r = Random(seed)
-        el = SimplexNoise(r.nextLong())
-        mo = SimplexNoise(r.nextLong())
+    constructor(rng: StatefulRNG) {
+        r = rng
+        el = FastNoise(r.nextInt())
+        mo = FastNoise(r.nextInt())
     }
 
     constructor() {
-        r = Random()
-        el = SimplexNoise(r.nextLong())
-        mo = SimplexNoise(r.nextLong())
+        r =  StatefulRNG()
+        el = FastNoise(r.nextInt())
+        mo = FastNoise(r.nextInt())
     }
 
     // Initial step the can be done per chunk
@@ -44,9 +45,9 @@ class WorldGen {
                 //global coord
                 val nx = chunkX * OverworldChunk.chunkSize + x
                 val ny = chunkY * OverworldChunk.chunkSize + y
-                var ridginess = fbm(nx.toDouble(), ny.toDouble(), 6, 1 / 320.0, 1.0, 2.0, 0.5)
+                var ridginess = fbm(nx.toDouble(), ny.toDouble(), 6, 2.0 / 320.0, 2.0, 0.5)
                 ridginess = abs(ridginess) * -1
-                var elevation = max(fbm(nx.toDouble(), ny.toDouble(), 6, 1 / 200.0, 1.0, 2.0, 0.5), ridginess)
+                var elevation = max(fbm(nx.toDouble(), ny.toDouble(), 6, 2.0 / 200.0, 2.0, 0.5), ridginess)
                 for (mod in shapeMods) {
                     elevation += mod.modify(nx, ny,line)
                 }
@@ -56,16 +57,17 @@ class WorldGen {
         return overWorldChunk
     }
 
-    private fun fbm(x: Double, y: Double, octaves: Int, frequency: Double, amplitude: Double, lacunarity: Double, gain: Double): Double {
-        var frequency = frequency
-        var amplitude = amplitude
-        var total = 0.0
-        for (i in 0 until octaves) {
-            total += el.eval(x * frequency, y * frequency) * amplitude
-            frequency *= lacunarity
-            amplitude *= gain
-        }
-        return total
+    private fun fbm(x: Double, y: Double, octaves: Int, frequency: Double, lacunarity: Double, gain: Double): Double {
+        return el.layered2D(x.toFloat(), y.toFloat(), el.seed, octaves, frequency.toFloat(), lacunarity.toFloat(), gain.toFloat()).toDouble();
+//        var frequency = frequency
+//        var amplitude = amplitude
+//        var total = 0.0
+//        for (i in 0 until octaves) {
+//            total += el.eval(x * frequency, y * frequency) * amplitude
+//            frequency *= lacunarity
+//            amplitude *= gain
+//        }
+//        return total
     }
 
     private fun generateChunkedTemperatureMap(overWorld: Overworld, chunkX: Int, chunkY: Int): OverworldChunk {
@@ -86,9 +88,8 @@ class WorldGen {
 
                 overWorldChunk!!.temperature[x][y] = MathUtils.limit(
                         1.2f * (1f - yDist) -
-                                max(0f, overWorldChunk.elevation[x][y]) + 0.1f * el.eval(
-                                (1.0f * nx / 125.0f).toDouble(),
-                                (1.0f * ny / 125.0f).toDouble()).toFloat(),
+                                max(0f, overWorldChunk.elevation[x][y]) +
+                                0.1f * mo.getConfiguredNoise(nx / 125f, ny / 125f),
                         -1f, 1f)
             }
         }

@@ -6,6 +6,7 @@ import com.github.otakusenpai.demomap.map.overworld.BiomeType
 import com.github.otakusenpai.demomap.map.overworld.Overworld
 import com.github.otakusenpai.demomap.map.procgen.WorldGen
 import com.github.otakusenpai.demomap.map.worldItems.Leader
+import squidpony.squidmath.StatefulRNG
 
 class World() {
     lateinit var worldGen: WorldGen
@@ -40,8 +41,8 @@ class World() {
         }
     }
 
-    constructor(screenX: Int, screenY: Int, seed: Long): this() {
-        worldGen = WorldGen(seed)
+    constructor(screenX: Int, screenY: Int, rng: StatefulRNG): this() {
+        worldGen = WorldGen(rng)
         overWorld = Overworld(xSize, ySize)
         screenWidth = screenX / 4
         screenHeight = screenY / 4
